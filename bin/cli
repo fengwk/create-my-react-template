@@ -1,0 +1,69 @@
+#!/usr/bin/env node
+const program = require('commander')
+const path = require('path');
+const fs = require('fs');
+
+// 递归拷贝目录及其内容
+function copyDirectory(src, dest) {
+  // 创建目标目录
+  fs.mkdirSync(dest, { recursive: true });
+
+  // 读取源目录中的文件和子目录
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+
+  // 遍历源目录中的每个文件和子目录
+  entries.forEach(entry => {
+    const sourcePath = path.join(src, entry.name);
+    const targetPath = path.join(dest, entry.name);
+
+    // 如果是子目录，则递归调用 copyDirectory
+    if (entry.isDirectory()) {
+      copyDirectory(sourcePath, targetPath);
+    } else {
+      // 如果是文件，则直接复制
+      fs.copyFileSync(sourcePath, targetPath);
+    }
+  });
+}
+
+// 替换文件中的占位符
+function replacePlaceholderInFile(filePath, placeholder, replacement) {
+  // 读取文件内容
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error(`Error reading file: ${err}`);
+      return;
+    }
+    // 替换占位符
+    const updatedData = data.replace(new RegExp(placeholder, 'g'), replacement);
+    // 写回文件
+    fs.writeFile(filePath, updatedData, 'utf8', (err) => {
+      if (err) {
+        console.error(`Error writing file: ${err}`);
+        return;
+      }
+    });
+  });
+}
+
+program.usage('<command>')
+
+program.version(require('../package').version)
+
+program
+  .command('init')
+  .description('Init a new template')
+  .argument('<projectPath>', 'project path')
+  .action((projectPath) => {
+    const templatePath = path.resolve(__dirname, '../template');
+    projectPath = path.resolve(process.cwd(), projectPath);
+    const projectPackagePath = path.resolve(projectPath, 'package.json');
+    const projectWebpackCommonPath = path.resolve(projectPath, 'webpack/webpack.common.js');
+    const projectName = path.basename(projectPath);
+    copyDirectory(templatePath, projectPath);
+    replacePlaceholderInFile(projectPackagePath, '{{projectName}}', projectName);
+    replacePlaceholderInFile(projectWebpackCommonPath, '{{projectName}}', projectName);
+    console.log(`${projectName} inited successfully.`);
+  })
+
+program.parse(process.argv)

@@ -1,0 +1,18 @@
+{
+  "name": "create-my-react-template",
+  "version": "1.0.3",
+  "description": "Create my react template",
+  "main": "index.js",
+  "bin": {
+    "create-my-react-template": "bin/cli"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^11.1.0"
+  }
+}

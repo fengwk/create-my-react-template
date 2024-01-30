@@ -1,0 +1,15 @@
+/**
+ * antd layout
+ */
+body,html {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.ant-layout {
+  width: 100%;
+  min-height: 100%;
+}
