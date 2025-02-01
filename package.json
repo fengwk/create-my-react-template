@@ -1,6 +1,6 @@
 {
   "name": "create-my-react-template",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Create my react template",
   "main": "index.js",
   "bin": {
