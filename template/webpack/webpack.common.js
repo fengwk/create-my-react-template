@@ -94,7 +94,7 @@ module.exports = function(config) {
           exclude: cssModuleRegex,
           use: [
             MiniCssExtractPlugin.loader,
-            cssLoader,
+            'css-loader',
             postcssLoader
           ],
           // 在package.json中如果错误设置sideEffects为false，webpack在打包时会认为整个项目都是无副作用的
@@ -108,7 +108,7 @@ module.exports = function(config) {
           test: cssModuleRegex,
           use: [
             MiniCssExtractPlugin.loader,
-            'css-loader',
+            cssLoader,
             postcssLoader
           ],
           sideEffects: true,
@@ -118,7 +118,7 @@ module.exports = function(config) {
           exclude: lessModuleRegex,
           use: [
             MiniCssExtractPlugin.loader,
-            cssLoader,
+            'css-loader',
             postcssLoader,
             'less-loader'
           ],
@@ -128,7 +128,7 @@ module.exports = function(config) {
           test: lessModuleRegex,
           use: [
             MiniCssExtractPlugin.loader,
-            'css-loader',
+            cssLoader,
             postcssLoader,
             'less-loader'
           ],
