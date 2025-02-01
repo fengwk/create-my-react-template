@@ -119,8 +119,8 @@ module.exports = function(config) {
           use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
-            'less-loader',
-            postcssLoader
+            postcssLoader,
+            'less-loader'
           ],
           sideEffects: true,
         },
@@ -129,8 +129,8 @@ module.exports = function(config) {
           use: [
             MiniCssExtractPlugin.loader,
             cssLoader,
-            'less-loader',
-            postcssLoader
+            postcssLoader,
+            'less-loader'
           ],
           sideEffects: true,
         },
