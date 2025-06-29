@@ -42,7 +42,18 @@ export function parseAntdFormFileds(formFields) {
 // 将服务端返回的时间解析为dayjs对象
 export function parseDateTime(dateTime) {
   // https://day.js.org/docs/en/parse/string-format
-  return dateTime ? dayjs(dateTime, 'YYYY-MM-DDTHH:mm:ss') : null;
+  if (Array.isArray(dateTime)) {
+    // Jackson返回array格式的时间格式
+    const [year, month, day, hour, minute, second, nanosecond] = dateTime;
+    const timeArr = [year, month, day, hour, minute, second, nanosecond / 1000000];
+    return dayjs(new Date(...timeArr));
+  } else if (typeof dateTime === 'number') {
+    // Fastjson返回long类型的时间戳
+    return dayjs(dateTime);
+  } else {
+    // Gson返回ISO-8601格式
+    return dateTime ? dayjs(dateTime, 'YYYY-MM-DDTHH:mm:ss') : null;
+  }
 }
 
 // 解析并格式化服务端返回的时间
